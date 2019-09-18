@@ -17,7 +17,7 @@ With the call or define method is used, this is explicitly defined, this allows 
 */
 
 // Principle 1
-
+/*
 // code example for Window Binding
 console.log(this);
 
@@ -66,4 +66,4 @@ function AngryPerson(greeter) {
   bill.speak();
   
   bill.speak.call(fred); 
-  
+  */
