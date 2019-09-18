@@ -50,6 +50,7 @@ CharacterStats.prototype.takeDamage = function() {
   * should inherit takeDamage() from CharacterStats
 */
 function Humanoid(hattrs){
+  this.attack = hattrs.attack;
   this.team = hattrs.team;
   this.weapons = hattrs.weapons;
   this.language = hattrs.language;
@@ -67,11 +68,36 @@ Humanoid.prototype.greet = function() {
   * Instances of CharacterStats should have all of the same properties as GameObject.
 */
 
+  // Stretch task: 
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(vattrs){
+    this.alliance = vattrs.alliance;
+    Humanoid.call(this, vattrs);
+  } 
+  
+  Villain.prototype = Object.create(Humanoid.prototype); 
+  
+  Villain.prototype.announce = function() {
+    return `${this.name} declares he is ${this.alliance}!`;
+  }
+
+  Villain.prototype.tookDamage = function(attacker) {
+    this.healthPoints -= attacker.attack;
+    if (this.healthPoints <= 0){
+      return this.destroy();
+    }
+    return `${this.name} took ${attacker.attack} damage! Their HP is now ${this.healthPoints}`;
+  }
+
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
 
   const mage = new Humanoid({
     createdAt: new Date(),
+    attack: 5,
     dimensions: {
       length: 2,
       width: 1,
@@ -88,6 +114,7 @@ Humanoid.prototype.greet = function() {
 
   const swordsman = new Humanoid({
     createdAt: new Date(),
+    attack: 5,
     dimensions: {
       length: 2,
       width: 2,
@@ -105,6 +132,7 @@ Humanoid.prototype.greet = function() {
 
   const archer = new Humanoid({
     createdAt: new Date(),
+    attack: 4,
     dimensions: {
       length: 1,
       width: 2,
@@ -112,6 +140,25 @@ Humanoid.prototype.greet = function() {
     },
     healthPoints: 10,
     name: 'Lilith',
+    team: 'Forest Kingdom',
+    weapons: [
+      'Bow',
+      'Dagger',
+    ],
+    language: 'Elvish',
+  });
+
+  const Baddie = new Villain({
+    alliance: 'Evil',
+    attack: 5,
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 10,
+    name: 'Kerragan',
     team: 'Forest Kingdom',
     weapons: [
       'Bow',
@@ -130,6 +177,12 @@ Humanoid.prototype.greet = function() {
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+
+  console.log(Baddie.announce());
+  console.log(Baddie.tookDamage(archer));
+  console.log(Baddie.tookDamage(archer));
+  console.log(Baddie.tookDamage(archer));
+
 
 
   // Stretch task: 
